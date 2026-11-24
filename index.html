@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국립방위변칙연구원 (N.A.D.R.) — 국가 지맥 및 변칙 현상 대응 기관</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            word-break: keep-all;
+        }
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* 기밀 모드 전용 스타일 */
+        .classified-scanline {
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(220, 38, 38, 0.03) 0px,
+                rgba(220, 38, 38, 0.03) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+        }
+        .modal-backdrop {
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        .modal-box {
+            animation: scaleIn 0.2s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#09090B] antialiased selection:bg-[#09090B] selection:text-white">
+
+    <!-- =====================================================================
+         [PUBLIC PORTAL] 대국민 공식 포털 화면
+         ===================================================================== -->
+    <div id="public-portal" class="min-h-screen flex flex-col">
+
+        <!-- 최상단 대한민국 공식 전자정부/국가기관 안내 바 -->
+        <div class="bg-[#09090B] text-zinc-300 text-xs py-2 px-4 border-b border-zinc-800">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>이 누리집은 대한민국 국가 지맥 및 변칙 현상 전담 연구기관 공식 포털입니다.</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-zinc-400">
+                    <span class="text-zinc-300">금일 지맥 공명 순서: <strong class="text-white font-semibold">남방(朱) → 동방(靑) → 북방(玄) → 서방(白)</strong></span>
+                    <span class="hidden sm:inline">|</span>
+                    <span class="font-mono-code text-zinc-300">EMERGENCY: 119-0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 내비게이션 헤더 -->
+        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-36 sm:h-40 md:h-44 gap-4">
+                    <!-- 기관 로고 -->
+                    <a href="#top" class="flex items-center group min-w-0">
+                        <img
+                            src="https://i.ibb.co/RGxn5MNz/image.png"
+                            alt="N.A.D.R. 국립방위변칙연구원 공식 로고"
+                            class="h-28 sm:h-32 md:h-36 w-auto max-w-[360px] sm:max-w-[520px] md:max-w-[680px] object-contain shrink-0 transition-transform duration-200 group-hover:scale-[1.01]"
+                            onerror="this.style.display='none'; document.getElementById('logo-fallback').classList.remove('hidden');"
+                        >
+                        <div id="logo-fallback" class="hidden w-16 h-16 rounded bg-[#09090B] text-white flex items-center justify-center font-mono-code font-bold text-lg shrink-0">
+                            NADR
+                        </div>
+                    </a>
+
+                    <!-- 데스크톱 내비게이션 메뉴 -->
+                    <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-zinc-700 shrink-0">
+                        <a href="#about" class="hover:text-black transition-colors py-2">연구원 소개</a>
+                        <a href="#guidelines" class="hover:text-black transition-colors py-2">국민행동요령</a>
+                        <a href="#agents" class="hover:text-black transition-colors py-2">소속 요원</a>
+                        <a href="#notices" class="hover:text-black transition-colors py-2">동향 및 보도자료</a>
+                    </nav>
+
+                    <!-- 우측 버튼 영역 -->
+                    <div class="flex items-center gap-2.5 shrink-0">
+                        <button
+                            onclick="openReportModal()"
+                            class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded text-xs font-semibold bg-white text-zinc-900 border border-zinc-300 hover:bg-zinc-100 transition-colors">
+                            <i data-lucide="siren" class="w-3.5 h-3.5"></i>
+                            <span>변칙 현상 신고</span>
+                        </button>
+                        <button
+                            onclick="openAuthModal()"
+                            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded text-xs font-semibold bg-[#09090B] text-white hover:bg-zinc-800 transition-colors"
+                            title="인가된 연구원 및 지휘부 전용">
+                            <i data-lucide="lock" class="w-3.5 h-3.5 text-zinc-400"></i>
+                            <span>기밀 열람</span>
+                        </button>
+                        <!-- 모바일 메뉴 토글 -->
+                        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded text-zinc-700 hover:bg-zinc-100" aria-label="메뉴 열기">
+                            <i data-lucide="menu" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 모바일 드롭다운 메뉴 -->
+            <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-zinc-200 px-4 py-3 space-y-2 text-sm font-medium">
+                <a href="#about" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded hover:bg-zinc-100 text-zinc-800">연구원 소개</a>
+                <a href="#guidelines" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded hover:bg-zinc-100 text-zinc-800">국민행동요령</a>
+                <a href="#agents" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded hover:bg-zinc-100 text-zinc-800">소속 요원</a>
+                <a href="#notices" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded hover:bg-zinc-100 text-zinc-800">동향 및 보도자료</a>
+                <button onclick="toggleMobileMenu(); openReportModal();" class="w-full text-left py-2 px-3 rounded bg-zinc-900 text-white font-semibold">
+                    + 변칙 현상 시민 신고 접수
+                </button>
+            </div>
+        </header>
+
+        <!-- 히어로 배너 + 실시간 지맥 관측 대시보드 -->
+        <section id="top" class="relative bg-white border-b border-zinc-200 overflow-hidden" style="background-image: radial-gradient(circle at 32% 52%, rgba(113, 113, 122, 0.34) 0%, rgba(161, 161, 170, 0.16) 24%, rgba(255, 255, 255, 0) 56%);">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18 lg:py-22 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                    <!-- 좌측: 기관 공식 슬로건 및 핵심 소개 -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-white/80 backdrop-blur-xs border border-zinc-300 text-xs font-semibold text-zinc-900">
+                            <span class="w-2 h-2 rounded-full bg-[#09090B]"></span>
+                            <span>국가 지맥 안정도: 정상 (LEVEL 1 — 안정 유지 중)</span>
+                        </div>
+
+                        <h1 class="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#09090B]">
+                            <span class="block">보이지 않는 위협으로부터</span>
+                            <span class="block mt-4 sm:mt-5 lg:mt-6">대한민국의 일상을 수호합니다.</span>
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-zinc-700 leading-relaxed max-w-2xl">
+                            국립방위변칙연구원(N.A.D.R.)은 한반도 지맥의 흐름을 상시 관측하고, 일상 너머에서 발생하는 비정형 변칙 현상(괴이)을 선제적으로 탐지·정화하는 국가 방위 전담 연구기관입니다.
+                        </p>
+
+                        <div class="pt-1 flex flex-wrap items-center gap-3">
+                            <a href="#guidelines" class="inline-flex items-center gap-2 px-5 py-3 rounded bg-[#09090B] text-white text-sm font-semibold hover:bg-zinc-800 transition-colors">
+                                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                                <span>변칙 재난 국민행동요령</span>
+                            </a>
+                            <a href="#agents" class="inline-flex items-center gap-2 px-5 py-3 rounded bg-white text-[#09090B] border border-zinc-300 text-sm font-semibold hover:bg-zinc-100 transition-colors">
+                                <span>특수대응부 요원 소개</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 우측: 실시간 지맥 관측 대시보드 패널 -->
+                    <div class="lg:col-span-5">
+                        <div class="bg-white border border-zinc-300 rounded overflow-hidden">
+                            <div class="bg-[#09090B] text-white px-5 py-3.5 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="activity" class="w-4 h-4 text-zinc-400"></i>
+                                    <span class="text-xs sm:text-sm font-bold tracking-wide">실시간 지맥 관측 현황판</span>
+                                </div>
+                                <span class="text-[11px] font-mono-code text-zinc-400" id="live-clock">SYNCED</span>
+                            </div>
+                            <div class="p-5 space-y-4">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="p-3.5 rounded bg-zinc-50 border border-zinc-200">
+                                        <div class="text-[11px] text-zinc-500 font-medium">수도권 평균 지맥 진동수</div>
+                                        <div class="mt-1 flex items-baseline gap-1.5">
+                                            <span class="text-xl font-mono-code font-bold text-[#09090B]">14.2</span>
+                                            <span class="text-xs font-mono-code text-zinc-500">Hz</span>
+                                        </div>
+                                        <div class="mt-1 text-[11px] font-medium text-zinc-600">● 정상 허용 범위 내</div>
+                                    </div>
+                                    <div class="p-3.5 rounded bg-zinc-50 border border-zinc-200">
+                                        <div class="text-[11px] text-zinc-500 font-medium">전국 관측 거점 가동률</div>
+                                        <div class="mt-1 flex items-baseline gap-1.5">
+                                            <span class="text-xl font-mono-code font-bold text-[#09090B]">100</span>
+                                            <span class="text-xs font-mono-code text-zinc-500">%</span>
+                                        </div>
+                                        <div class="mt-1 text-[11px] font-medium text-zinc-600">● 142개 관측소 정상</div>
+                                    </div>
+                                </div>
+
+                                <!-- 사방위 관할 구역 대응 현황 -->
+                                <div class="border border-zinc-200 rounded p-3.5 space-y-2.5">
+                                    <div class="flex items-center justify-between text-xs font-semibold text-zinc-800">
+                                        <span>사방위 관할 구역 대응 현황</span>
+                                        <span class="font-mono-code text-[11px] text-zinc-400">4-SECTOR GRID</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 text-xs">
+                                        <div class="flex items-center justify-between px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded">
+                                            <span class="font-medium text-zinc-800">동방 (청룡)</span>
+                                            <span class="font-mono-code text-[11px] text-zinc-600 font-semibold">정상</span>
+                                        </div>
+                                        <div class="flex items-center justify-between px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded">
+                                            <span class="font-medium text-zinc-800">서방 (백호)</span>
+                                            <span class="font-mono-code text-[11px] text-zinc-600 font-semibold">정상</span>
+                                        </div>
+                                        <div class="flex items-center justify-between px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded">
+                                            <span class="font-medium text-zinc-800">남방 (주작)</span>
+                                            <span class="font-mono-code text-[11px] text-zinc-600 font-semibold">정상</span>
+                                        </div>
+                                        <div class="flex items-center justify-between px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded">
+                                            <span class="font-medium text-zinc-800">북방 (현무)</span>
+                                            <span class="font-mono-code text-[11px] text-zinc-600 font-semibold">정상</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-1 text-xs text-zinc-500 border-t border-zinc-100">
+                                    <span>공명 위상 순서: <strong class="text-zinc-900">남방(朱) → 동방(靑) → 북방(玄) → 서방(白)</strong></span>
+                                    <span class="font-mono-code text-[#09090B] font-semibold">직통 119-0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 1: 연구원 소개 및 조직 구성 -->
+        <section id="about" class="py-16 sm:py-20 bg-[#F8FAFC] border-b border-zinc-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b-2 border-[#09090B] pb-5 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-mono-code font-bold tracking-widest text-zinc-500 uppercase">01 // INSTITUTION OVERVIEW</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#09090B] mt-1">연구원 소개 및 국가 방위 체계</h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-zinc-600 max-w-xl">
+                        국립방위변칙연구원은 전통 지맥 이론과 현대 양자·파동 계측 기술을 융합하여, 국가 주요 기반시설과 국민 생활권을 변칙 재난으로부터 보호합니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-7 bg-white border border-zinc-300 divide-y divide-zinc-200">
+                        <div class="p-6 flex items-start gap-4">
+                            <div class="w-10 h-10 bg-[#09090B] text-white flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="compass" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-mono-code font-bold text-zinc-500 uppercase">01-A // LEY-LINE MONITORING</div>
+                                <h3 class="text-lg font-bold text-[#09090B] mt-0.5">국가 지맥 상시 관측망</h3>
+                                <p class="text-sm text-zinc-600 mt-1.5 leading-relaxed">
+                                    한반도 중심 지맥에 구축된 142개 광역 관측 네트워크입니다. 외부 차원의 인과율 균열과 이상 파동을 조기에 포착하여 국가 안보의 핵심 기반을 수호합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 flex items-start gap-4">
+                            <div class="w-10 h-10 bg-[#09090B] text-white flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="radar" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-mono-code font-bold text-zinc-500 uppercase">01-B // ANOMALY CLASSIFICATION</div>
+                                <h3 class="text-lg font-bold text-[#09090B] mt-0.5">변칙 현상(괴이) 등급 체계</h3>
+                                <p class="text-sm text-zinc-600 mt-1.5 leading-relaxed">
+                                    인간의 집단 무의식과 지맥 왜곡이 결합해 발생하는 모든 비정형 현상을 1등급(미약)부터 4등급(재난)까지 실시간 분류하여 맞춤형 정화 작전을 전개합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 flex items-start gap-4">
+                            <div class="w-10 h-10 bg-[#09090B] text-white flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="shield" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-mono-code font-bold text-zinc-500 uppercase">01-C // FOUR-DIRECTIONAL UNIT</div>
+                                <h3 class="text-lg font-bold text-[#09090B] mt-0.5">사신수(四神獸) 특수대응부</h3>
+                                <p class="text-sm text-zinc-600 mt-1.5 leading-relaxed">
+                                    동·서·남·북 사방위의 수호 신격과 감응하는 4인의 정예 요원으로 구성된 현장 전담 부대입니다. 고위험 변칙 개체의 즉각적인 진압 및 현장 복구를 수행합니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-white border border-zinc-300">
+                        <div class="bg-[#09090B] text-white px-5 py-3.5 flex items-center justify-between">
+                            <span class="text-sm font-bold tracking-wide">연구원 주요 조직 편제</span>
+                            <span class="text-[11px] font-mono-code text-zinc-400">ORGANIZATION</span>
+                        </div>
+                        <div class="divide-y divide-zinc-200 text-sm">
+                            <div class="p-4 flex items-start justify-between gap-4">
+                                <div>
+                                    <div class="text-[11px] font-mono-code font-bold text-zinc-500">DEPT-01</div>
+                                    <div class="font-bold text-[#09090B] mt-0.5">지맥관측예보본부</div>
+                                    <p class="text-xs text-zinc-600 mt-1">전국 142개 관측 거점의 지맥 진동수 분석 및 변칙 발생 경보 발령</p>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-start justify-between gap-4">
+                                <div>
+                                    <div class="text-[11px] font-mono-code font-bold text-zinc-500">DEPT-02</div>
+                                    <div class="font-bold text-[#09090B] mt-0.5">특수대응부 (사신수)</div>
+                                    <p class="text-xs text-zinc-600 mt-1">동·서·남·북 4개 권역 전담 요원의 현장 출동, 개체 제압 및 정화 작전 수행</p>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-start justify-between gap-4">
+                                <div>
+                                    <div class="text-[11px] font-mono-code font-bold text-zinc-500">DEPT-03</div>
+                                    <div class="font-bold text-[#09090B] mt-0.5">의례자문위원회</div>
+                                    <p class="text-xs text-zinc-600 mt-1">국가 안녕 기원 의례 집전 및 고대 신격·신탁 문헌 해독 자문</p>
+                                </div>
+                            </div>
+                            <div class="p-4 flex items-start justify-between gap-4">
+                                <div>
+                                    <div class="text-[11px] font-mono-code font-bold text-zinc-500">DEPT-04</div>
+                                    <div class="font-bold text-[#09090B] mt-0.5">민간피해복구지원단</div>
+                                    <p class="text-xs text-zinc-600 mt-1">변칙 현상 노출 시민의 심리 안정 지원 및 인지 왜곡 기억 정화 처리</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 국민행동요령 -->
+        <section id="guidelines" class="py-16 sm:py-20 bg-white border-b border-zinc-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b-2 border-[#09090B] pb-5 mb-10 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-mono-code font-bold tracking-widest text-zinc-500 uppercase">02 // CITIZEN SAFETY PROTOCOL</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#09090B] mt-1">변칙 재난 국민행동요령</h2>
+                        <p class="text-sm text-zinc-600 mt-1.5">일상생활 중 원인을 알 수 없는 공간 왜곡, 이상 음향, 비정형 개체를 목격하셨을 때 아래 4단계 수칙을 즉시 이행해 주십시오.</p>
+                    </div>
+                    <button onclick="openReportModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#09090B] text-white text-xs sm:text-sm font-semibold hover:bg-zinc-800 transition-colors">
+                        <i data-lucide="phone-call" class="w-4 h-4"></i>
+                        <span>즉시 온라인 변칙 신고</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-zinc-300 divide-y md:divide-y-0 md:divide-x divide-zinc-300 bg-white">
+                    <div class="p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-zinc-200">
+                                <span class="text-xs font-mono-code font-bold text-[#09090B]">STEP 01</span>
+                                <i data-lucide="eye-off" class="w-4 h-4 text-zinc-700"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-[#09090B] mb-2">시선 회피 및 접촉 금지</h3>
+                            <p class="text-xs text-zinc-600 leading-relaxed">
+                                비정형 개체나 기이한 문양과 직접 눈을 마주치지 마십시오. 스마트폰 촬영이나 음성 녹음은 인지 오염을 유발할 수 있으므로 삼가야 합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-zinc-200">
+                                <span class="text-xs font-mono-code font-bold text-[#09090B]">STEP 02</span>
+                                <i data-lucide="footprints" class="w-4 h-4 text-zinc-700"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-[#09090B] mb-2">반경 300m 이상 신속 이탈</h3>
+                            <p class="text-xs text-zinc-600 leading-relaxed">
+                                뛰거나 큰 소리를 내지 않고 침착하게 발생 지점에서 최소 300m 이상 떨어진 밝고 개방된 장소(지하철역 대합실, 관공서 등)로 이동하십시오.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-zinc-200">
+                                <span class="text-xs font-mono-code font-bold text-[#09090B]">STEP 03</span>
+                                <i data-lucide="radio" class="w-4 h-4 text-zinc-700"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-[#09090B] mb-2">긴급 직통번호 119-0 신고</h3>
+                            <p class="text-xs text-zinc-600 leading-relaxed">
+                                안전이 확보된 직후 국번 없이 <strong class="text-[#09090B]">119-0</strong> 또는 본 포털의 신고 창구로 발생 위치, 목격 시각, 주변 이상 징후(온도 급변, 악취 등)를 제보하십시오.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 pb-2.5 border-b border-zinc-200">
+                                <span class="text-xs font-mono-code font-bold text-[#09090B]">STEP 04</span>
+                                <i data-lucide="ban" class="w-4 h-4 text-zinc-700"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-[#09090B] mb-2">통제 구역 접근 금지</h3>
+                            <p class="text-xs text-zinc-600 leading-relaxed">
+                                특수대응부 요원이 설치한 황색·청색 통제 표식 및 격리선 내부로는 작전 종료 안내가 내려질 때까지 절대 진입하지 마십시오.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-7 bg-white border border-zinc-300 p-6">
+                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-zinc-200">
+                            <h3 class="text-base font-bold text-[#09090B]">지맥 경보 4단계별 시민 행동 기준</h3>
+                            <span class="text-xs font-mono-code text-zinc-400">ALERT LEVELS</span>
+                        </div>
+                        <div class="space-y-3 text-xs sm:text-sm">
+                            <div class="flex items-start gap-3 p-2.5 bg-zinc-50 border border-zinc-200">
+                                <span class="shrink-0 px-2.5 py-0.5 font-bold bg-emerald-100 text-emerald-800 rounded">1단계 관심</span>
+                                <p class="text-zinc-700">일상적인 지맥 파동 상태입니다. 정상적인 사회·경제 활동이 가능하며 별도 통제가 없습니다.</p>
+                            </div>
+                            <div class="flex items-start gap-3 p-2.5 bg-zinc-50 border border-zinc-200">
+                                <span class="shrink-0 px-2.5 py-0.5 font-bold bg-amber-100 text-amber-800 rounded">2단계 주의</span>
+                                <p class="text-zinc-700">국지적 지맥 왜곡이 관측된 상태입니다. 심야 시간대 산간·하천변·폐건물 출입을 자제해 주십시오.</p>
+                            </div>
+                            <div class="flex items-start gap-3 p-2.5 bg-zinc-50 border border-zinc-200">
+                                <span class="shrink-0 px-2.5 py-0.5 font-bold bg-orange-100 text-orange-800 rounded">3단계 경계</span>
+                                <p class="text-zinc-700">중규모 변칙 개체 출현 단계입니다. 해당 행정동 야외 활동을 중단하고 실내 대피 후 재난 문자를 확인하십시오.</p>
+                            </div>
+                            <div class="flex items-start gap-3 p-2.5 bg-zinc-50 border border-zinc-200">
+                                <span class="shrink-0 px-2.5 py-0.5 font-bold bg-red-100 text-red-800 rounded">4단계 심각</span>
+                                <p class="text-zinc-700">광역 지맥 동요 단계입니다. 긴급재난문자 안내에 따라 즉시 지정 지하 대피시설로 이동하십시오.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-[#09090B] border border-zinc-800 p-6 flex flex-col justify-between text-zinc-200">
+                        <div>
+                            <div class="flex items-center gap-2 text-white font-bold text-base mb-4 pb-3 border-b border-zinc-800">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-zinc-400"></i>
+                                <span>현장 절대 금지 수칙 (법적 처벌 대상)</span>
+                            </div>
+                            <ul class="space-y-3 text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="font-mono-code font-bold text-white mt-0.5">01.</span>
+                                    <span>작전 수행 중인 특수대응부 요원의 진로를 방해하거나 말을 거는 행위</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="font-mono-code font-bold text-white mt-0.5">02.</span>
+                                    <span>변칙 현상 잔해물, 유류품, 비정형 결정체를 임의로 수거하거나 반출하는 행위</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="font-mono-code font-bold text-white mt-0.5">03.</span>
+                                    <span>미확인 변칙 현상 영상 및 허위 경보 문자를 온라인에 유포하여 사회적 혼란을 조장하는 행위</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-5 pt-4 border-t border-zinc-800 text-xs text-zinc-400">
+                            ※ 「국가변칙재난관리법」 제24조에 따라 통제선 무단 침입 시 즉각 격리 및 기억 정화 조치가 집행됩니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 3: 소속 요원 (사신수 특수대응부 요원 + 특별 의례고문 하위 분류 통합) -->
+        <section id="agents" class="py-16 sm:py-20 bg-[#F8FAFC] border-b border-zinc-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+                <!-- 통합 섹션 헤더 -->
+                <div class="border-b-2 border-[#09090B] pb-5">
+                    <span class="text-xs font-mono-code font-bold tracking-widest text-zinc-500 uppercase">03 // AFFILIATED PERSONNEL</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#09090B] mt-1">소속 요원</h2>
+                    <p class="text-sm text-zinc-600 mt-1.5">
+                        국립방위변칙연구원 소속 현장 대응 전담 부대 및 의례 자문 인력의 공식 프로필입니다.
+                    </p>
+                </div>
+
+                <!-- 하위 분류 03-1: 사신수(四神獸) 특수대응부 요원 -->
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-zinc-300 pb-3">
+                        <div>
+                            <span class="text-[11px] font-mono-code font-bold text-zinc-500">03-1 // SPECIAL RESPONSE DIVISION</span>
+                            <h3 class="text-xl sm:text-2xl font-bold text-[#09090B] mt-0.5">사신수(四神獸) 특수대응부 요원</h3>
+                        </div>
+                        <span class="text-xs text-zinc-500">카드를 선택하면 상세 정보를 열람할 수 있습니다.</span>
+                    </div>
+
+                    <!-- 4인 요원 카드 그리드 -->
+                    <div id="agents-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- JS로 렌더링 -->
+                    </div>
+                </div>
+
+                <!-- 하위 분류 03-2: 특별 의례고문 -->
+                <div id="advisor" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-zinc-300 pb-3">
+                        <div>
+                            <span class="text-[11px] font-mono-code font-bold text-zinc-500">03-2 // SPECIAL RITUAL ADVISOR</span>
+                            <h3 class="text-xl sm:text-2xl font-bold text-[#09090B] mt-0.5">특별 의례고문</h3>
+                        </div>
+                        <span class="text-xs text-zinc-500">의례자문위원회 전담 자문 인력</span>
+                    </div>
+
+                    <div class="bg-white border border-zinc-300 overflow-hidden flex flex-col md:flex-row items-stretch">
+                        <!-- 임흑아 사진 영역 -->
+                        <div class="md:w-64 lg:w-72 shrink-0 bg-zinc-900 border-b md:border-b-0 md:border-r border-zinc-300 relative aspect-[4/5] md:aspect-auto">
+                            <img src="https://i.ibb.co/kgC7WJ7T/IMG-5729.png" alt="임흑아 특별 의례고문 공식 프로필" class="w-full h-full object-cover object-top">
+                            <span class="absolute top-3 left-3 px-2.5 py-0.5 text-[11px] font-mono-code font-bold bg-black/85 text-white border border-zinc-600">ADVISOR-00</span>
+                        </div>
+
+                        <!-- 임흑아 정보 영역 -->
+                        <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between gap-6">
+                            <div class="space-y-3">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 text-xs font-semibold bg-zinc-100 text-zinc-800 border border-zinc-300">의례자문위원회</span>
+                                </div>
+                                <div class="flex items-baseline gap-3">
+                                    <h4 class="text-2xl sm:text-3xl font-bold text-[#09090B]">임흑아</h4>
+                                    <span class="text-sm font-semibold text-zinc-600">특별 의례고문</span>
+                                </div>
+                                <p class="text-sm text-zinc-600 leading-relaxed max-w-3xl">
+                                    국가 지맥의 안정을 위한 정기 의례를 집전하고, 고대 무속 문헌 및 변칙 신탁 해석을 전담하는 특별 의례고문입니다.
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-zinc-200">
+                                <div class="flex items-center gap-6 text-xs sm:text-sm text-zinc-600">
+                                    <div><span class="text-zinc-400 mr-1.5">연령</span><strong class="text-zinc-900">불명</strong></div>
+                                    <div><span class="text-zinc-400 mr-1.5">성별</span><strong class="text-zinc-900 font-mono-code">XY</strong></div>
+                                </div>
+                                <button onclick="openAdvisorModal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-[#09090B] text-white text-xs sm:text-sm font-semibold hover:bg-zinc-800 transition-colors">
+                                    <span>공식 프로필 상세 보기</span>
+                                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 4: 동향 및 보도자료 -->
+        <section id="notices" class="py-16 sm:py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b-2 border-[#09090B] pb-5 mb-8 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-mono-code font-bold tracking-widest text-zinc-500 uppercase">04 // PRESS &amp; ANNOUNCEMENTS</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#09090B] mt-1">연구원 동향 및 보도자료</h2>
+                    </div>
+                    <span class="text-xs text-zinc-500">항목을 클릭하면 공식 발표 전문을 확인할 수 있습니다.</span>
+                </div>
+
+                <div id="notices-list" class="bg-white border border-zinc-300 divide-y divide-zinc-200 overflow-hidden">
+                    <!-- JS로 렌더링 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 공식 푸터 -->
+        <footer class="mt-auto bg-[#09090B] text-zinc-400 text-xs py-12 px-4 border-t border-zinc-800">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <img
+                        src="https://i.ibb.co/RGxn5MNz/image.png"
+                        alt="N.A.D.R. 로고"
+                        class="h-10 w-auto object-contain brightness-0 invert opacity-80"
+                    >
+                    <div class="space-y-1.5">
+                        <div class="text-white font-bold text-sm">국립방위변칙연구원 (N.A.D.R. — National Anomaly Defense Research Institute)</div>
+                        <p>서울특별시 종로구 사직로 지하청사 제1연구단지 | 변칙 현상 긴급 제보 직통: 119-0 (24시간 연중무휴)</p>
+                        <p class="text-zinc-500 font-mono-code">LEY-RESONANCE SEQUENCE // © 2026 National Anomaly Defense Research Institute.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 shrink-0">
+                    <button onclick="openReportModal()" class="text-zinc-300 hover:text-white underline underline-offset-4">시민 제보 접수</button>
+                    <span>|</span>
+                    <button onclick="openAuthModal()" class="text-zinc-400 hover:text-zinc-200 font-mono-code">INTERNAL ARCHIVE</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- =====================================================================
+         [CLASSIFIED ARCHIVE] 기밀 열람 모드 (인증 코드: SENW)
+         ===================================================================== -->
+    <div id="classified-portal" class="hidden min-h-screen bg-[#09090B] text-zinc-200 classified-scanline">
+        <!-- 기밀 상단 경고 바 -->
+        <div class="bg-red-950/90 border-b border-red-800 text-red-200 text-xs py-2 px-4">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2 font-mono-code">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-red-400"></i>
+                    <span class="font-bold">TOP SECRET // LEVEL-0 CLEARANCE VERIFIED</span>
+                </div>
+                <span>경고: 본 기록의 무단 복제 및 외부 유출 시 즉각 처분 대상이 됩니다.</span>
+            </div>
+        </div>
+
+        <!-- 기밀 헤더 -->
+        <header class="border-b border-zinc-800 bg-black/85 backdrop-blur-md sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-36 sm:h-40 md:h-44 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-5 min-w-0">
+                    <img
+                        src="https://i.ibb.co/PsXzPv8P/2.png"
+                        alt="N.A.D.R. 기밀 아카이브 로고"
+                        class="h-28 sm:h-32 md:h-36 w-auto max-w-[360px] sm:max-w-[520px] md:max-w-[680px] object-contain shrink-0"
+                    >
+                    <div class="hidden xl:block border-l border-zinc-800 pl-5">
+                        <div class="text-sm font-bold text-red-500 font-mono-code">INTERNAL ARCHIVE // PROJECT HWANGRYONG</div>
+                        <div class="text-xs text-zinc-400 mt-0.5">국립방위변칙연구원 1급 기밀 기록 보관소</div>
+                    </div>
+                </div>
+                <button
+                    onclick="exitClassifiedMode()"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-zinc-900 border border-zinc-700 text-zinc-200 hover:bg-zinc-800 text-xs font-mono-code font-semibold transition-colors shrink-0">
+                    <i data-lucide="log-out" class="w-3.5 h-3.5 text-red-400"></i>
+                    <span>대국민 포털로 복귀</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+            <!-- 기밀 진실 기록서 -->
+            <section class="border border-red-900/60 bg-zinc-950/90 rounded-lg p-6 sm:p-8 space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-red-900/40 pb-4">
+                    <div>
+                        <span class="text-xs font-mono-code text-red-500 font-bold">DOCUMENT // OMEGA-01</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">프로젝트 황룡(黃龍) 및 사방신(四方神) 운용 진실 기록서</h2>
+                    </div>
+                    <span class="px-2.5 py-1 text-xs font-mono-code bg-red-950 border border-red-800 text-red-300 rounded">삭제 승인 대기 문서</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-zinc-300 leading-relaxed">
+                    <div class="p-5 rounded bg-black/60 border border-zinc-800 space-y-3">
+                        <h3 class="text-red-400 font-bold font-mono-code text-xs uppercase">01. 대국민 위장 명분과 실제 목적</h3>
+                        <p>
+                            대외적으로 국립방위변칙연구원(N.A.D.R.)은 지맥에서 발생하는 괴이를 토벌하여 시민을 보호하는 국가 기관으로 홍보되나, 실제 설립 목적은 <strong class="text-white">동·서·남·북 사방위의 신격(청룡·백호·주작·현무)을 인간 소체(요원 4인)에 강제 감응시켜 지맥의 정기를 응집하는 것</strong>에 있다.
+                        </p>
+                        <p>
+                            사신수 특수대응부가 현장에서 정화하는 변칙 개체들의 잔여 영기는 연구원 지하 제단으로 회수되어, 중앙 지맥의 최종 강림체 <strong class="text-red-400">‘황룡(黃龍)’</strong>을 깨우기 위한 공물로 축적된다.
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded bg-black/60 border border-zinc-800 space-y-3">
+                        <h3 class="text-red-400 font-bold font-mono-code text-xs uppercase">02. 의례고문 임흑아의 실체 및 통제권</h3>
+                        <p>
+                            대외적으로 ‘의례자문위원회 소속 특별 의례고문’으로 등록된 <strong class="text-white">임흑아</strong>는 연구원이 고용한 자문위원이 아니다. 그는 최초의 의례가 시작된 이래 기관 상층부를 실질적으로 장악해 온 <strong class="text-red-400">황룡 의식의 집행자</strong>다.
+                        </p>
+                        <p>
+                            요원 4인이 겪는 심리적 결핍과 사명감은 모두 임흑아의 신탁 조율을 통해 의도적으로 유지되고 있으며, 임계점에 도달하는 날 사방위의 그릇(요원 4인)은 중앙 제단에서 완전히 소모될 예정이다.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 기밀 요원 관찰 기록 (4인 카드 그리드 - 일반 포털과 동일 구조) -->
+            <section class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-red-900/50 pb-4">
+                    <div>
+                        <span class="text-xs font-mono-code text-red-500 font-bold">SUBJECT LOGS // 01 — 04</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">사방신(四神獸) 매개체 1급 기밀 관찰 기록</h2>
+                    </div>
+                    <span class="text-xs text-zinc-400">카드를 선택하면 심층 기밀 프로필 및 통제 관찰 일지를 열람할 수 있습니다.</span>
+                </div>
+
+                <div id="classified-agents-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- JS로 렌더링 -->
+                </div>
+            </section>
+
+            <!-- 은폐된 인사 기록 아카이브 (N.A.D.R. 인사 기록 — 기밀 문서) -->
+            <section class="border border-zinc-800 bg-zinc-950/90 rounded-lg p-6 sm:p-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-zinc-800 pb-4">
+                    <div>
+                        <span class="text-xs font-mono-code text-red-500 font-bold">CONCEALED PERSONNEL FILES // INTERVIEW LOGS</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">N.A.D.R. 인사 기록 — 기밀 문서</h2>
+                    </div>
+                    <span class="text-xs text-zinc-400">기관 내부 은폐 지정 문서 · 대상자를 선택해 면접 녹취록 원문을 열람하십시오.</span>
+                </div>
+
+                <div id="classified-interviews-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- JS로 렌더링 -->
+                </div>
+            </section>
+
+            <!-- 기밀 고문 기록 (임흑아) -->
+            <section class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-red-900/50 pb-4">
+                    <div>
+                        <span class="text-xs font-mono-code text-red-500 font-bold">EXECUTOR RECORD // 000</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">의식 집행자 1급 기밀 관찰 기록</h2>
+                    </div>
+                    <span class="text-xs text-zinc-400">카드를 선택하면 심층 기밀 프로필 및 통제 관찰 일지를 열람할 수 있습니다.</span>
+                </div>
+
+                <article onclick="openClassifiedAdvisorModal()"
+                    class="group cursor-pointer border border-red-900/60 bg-zinc-950/90 hover:border-red-600 rounded-lg overflow-hidden flex flex-col md:flex-row items-stretch transition-all">
+                    <div class="md:w-64 lg:w-72 shrink-0 bg-black border-b md:border-b-0 md:border-r border-red-900/50 relative aspect-[4/5] md:aspect-auto overflow-hidden">
+                        <img src="https://i.ibb.co/kstb9YZN/IMG-5726.png" alt="임흑아 기밀 기록 사진" class="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300">
+                        <span class="absolute top-3 left-3 px-2.5 py-0.5 text-[11px] font-mono-code font-bold bg-red-950/95 text-red-200 border border-red-700 rounded">NADR-◼︎◼︎◼︎◼︎-000</span>
+                    </div>
+                    <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between gap-6">
+                        <div class="space-y-3">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="px-2.5 py-0.5 text-xs font-mono-code bg-red-950/80 text-red-300 border border-red-800 rounded">NADR-◼︎◼︎◼︎◼︎-000</span>
+                                <span class="px-2.5 py-0.5 text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-700 rounded">황룡 의식 집행자</span>
+                            </div>
+                            <div class="flex items-baseline gap-3">
+                                <h3 class="text-2xl sm:text-3xl font-bold text-white group-hover:text-red-400 transition-colors">임흑아</h3>
+                                <span class="text-sm font-medium text-red-400">대외 직책: 특별 의례고문</span>
+                            </div>
+                            <p class="text-sm text-zinc-400 leading-relaxed max-w-3xl">
+                                최초의 의례가 집전된 이래 연구원 상층부와 사방위 매개체 4인을 실질적으로 조율해 온 황룡 의식의 핵심 집행자입니다. 상세 기밀 프로필을 열람하려면 기록을 선택하십시오.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-red-900/40">
+                            <div class="flex items-center gap-6 text-xs sm:text-sm text-zinc-400">
+                                <div><span class="text-zinc-500 mr-1.5">연령</span><strong class="text-zinc-200">불명</strong></div>
+                                <div><span class="text-zinc-500 mr-1.5">성별</span><strong class="text-zinc-200 font-mono-code">XY</strong></div>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-red-950/80 border border-red-800 text-red-200 text-xs sm:text-sm font-semibold group-hover:bg-red-900 group-hover:text-white transition-colors">
+                                <span>기밀 관찰 기록 열람</span>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <!-- =====================================================================
+         [CLASSIFIED LOADING OVERLAY] 기밀 아카이브 진입 및 복귀 로딩 화면
+         ===================================================================== -->
+    <div id="classified-loader" class="hidden fixed inset-0 z-50 bg-[#050507] text-zinc-200 flex items-center justify-center p-6 classified-scanline">
+        <div id="loader-card" class="w-full max-w-lg border border-red-900/70 bg-black/95 p-6 sm:p-8 space-y-6 shadow-2xl">
+            <div id="loader-header" class="flex items-center justify-between border-b border-red-950 pb-4">
+                <div class="flex items-center gap-2.5">
+                    <span id="loader-ping" class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+                    <span id="loader-badge" class="text-xs font-mono-code font-bold tracking-widest text-red-500">CLEARANCE VERIFIED // OMEGA</span>
+                </div>
+                <span id="loader-percent" class="text-xs font-mono-code font-bold text-red-400">0%</span>
+            </div>
+
+            <div class="space-y-2">
+                <h3 id="loader-title" class="text-base sm:text-lg font-bold text-white tracking-tight">1급 기밀 기록 보관소 복호화 중...</h3>
+                <p id="loader-subtitle" class="text-xs text-zinc-400 font-mono-code">DECRYPTING PROJECT HWANGRYONG &amp; SUBJECT ARCHIVES</p>
+            </div>
+
+            <!-- 진행률 바 -->
+            <div id="loader-track" class="w-full h-2 bg-zinc-900 border border-zinc-800 overflow-hidden">
+                <div id="loader-bar" class="h-full bg-red-600 transition-all duration-150" style="width: 0%;"></div>
+            </div>
+
+            <!-- 터미널 로그 출력 -->
+            <div id="loader-logs" class="bg-zinc-950 border border-zinc-900 p-3.5 font-mono-code text-[11px] text-zinc-400 space-y-1.5 min-h-[104px]">
+                <div>&gt; 사방위 지맥 공명 위상 [S-E-N-W] 일치 확인...</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =====================================================================
+         [MODALS] 상세 프로필 / 보도자료 / 시민 신고 / 기밀 인증 모달
+         ===================================================================== -->
+
+    <!-- 1. 요원 상세 프로필 모달 -->
+    <div id="agent-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 modal-backdrop">
+        <div class="bg-white border border-slate-300 rounded-lg w-full max-w-2xl max-h-[88vh] overflow-y-auto p-6 sm:p-8 shadow-2xl modal-box" id="agent-modal-content">
+            <!-- JS 동적 삽입 -->
+        </div>
+    </div>
+
+    <!-- 2. 특별 의례고문(임흑아) 상세 모달 -->
+    <div id="advisor-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 modal-backdrop">
+        <div class="bg-white border border-slate-300 rounded-lg w-full max-w-2xl max-h-[88vh] overflow-y-auto p-6 sm:p-8 shadow-2xl modal-box">
+            <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+                <div class="flex items-center gap-4">
+                    <img src="https://i.ibb.co/kgC7WJ7T/IMG-5729.png" alt="임흑아 프로필" class="w-16 h-20 rounded object-cover object-top border border-slate-300 shrink-0">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="px-2 py-0.5 text-[11px] font-mono-code font-bold bg-[#0F172A] text-white rounded">ADVISOR-00</span>
+                            <span class="px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-900 border border-amber-200 rounded">의례자문위원회</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[#0F172A]">임흑아</h3>
+                        <p class="text-sm font-semibold text-[#1E3A8A] mt-0.5">특별 의례고문</p>
+                    </div>
+                </div>
+                <button onclick="closeAdvisorModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-md hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                    <div class="text-slate-400 mb-0.5">연령</div>
+                    <div class="font-bold text-slate-800 text-sm">불명</div>
+                </div>
+                <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                    <div class="text-slate-400 mb-0.5">성별</div>
+                    <div class="font-bold text-slate-800 font-mono-code text-sm">XY</div>
+                </div>
+                <div class="p-3 rounded-md bg-slate-50 border border-slate-200 col-span-2 sm:col-span-1">
+                    <div class="text-slate-400 mb-0.5">소속</div>
+                    <div class="font-bold text-slate-800 text-sm">의례자문위원회</div>
+                </div>
+            </div>
+
+            <div class="mt-5 space-y-4">
+                <div>
+                    <h4 class="text-xs font-mono-code font-bold text-slate-500 uppercase mb-1.5">인물 성향 및 공식 기록</h4>
+                    <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-md border border-slate-200">
+                        표정과 어조를 다스리는 감각이 기울어져 있어, 사태가 아무리 험악하게 틀어져도 나직하고 온화한 목소리를 가다듬는다. 대놓고 적의나 멸시를 드러내는 상대를 마주해도 결코 눈짓 하나 흔들리지 않으며, 그저 다정한 미소를 띤 채 뼈를 파고드는 신탁을 낮게 속삭일 뿐이다. 신성한 규율과 무속적 기품 때문에, 그 누구를 상대하든 결점 없는 정갈한 예법을 내보인다. 증명 불가능한 '마음'이나 '믿음' 같은 추상적인 기호는 아예 가치조차 두지 않는다. 그에게 있어 오직 손끝에 잡히는 핏빛 구슬, 서늘하게 빛나는 보석, 그리고 실체로 존재하는 신성의 정수만이 유일하게 신뢰할 수 있는 '사랑'이자 '진실'이다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="font-mono-code font-bold text-slate-800 mb-1">LIKE</div>
+                        <div class="text-slate-600">정제된 물성 | 예법 | 정적</div>
+                    </div>
+                    <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="font-mono-code font-bold text-slate-800 mb-1">HATE</div>
+                        <div class="text-slate-600">추상적인 믿음 | 어설픈 배려 | 무례함</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 보도자료 상세 모달 -->
+    <div id="notice-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 modal-backdrop">
+        <div class="bg-white border border-slate-300 rounded-lg w-full max-w-xl p-6 sm:p-8 shadow-2xl modal-box" id="notice-modal-content">
+            <!-- JS 동적 삽입 -->
+        </div>
+    </div>
+
+    <!-- 4. 변칙 현상 시민 신고 모달 -->
+    <div id="report-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 modal-backdrop">
+        <div class="bg-white border border-slate-300 rounded-lg w-full max-w-lg p-6 sm:p-8 shadow-2xl modal-box">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="siren" class="w-5 h-5 text-[#1E3A8A]"></i>
+                    <h3 class="text-lg font-bold text-[#0F172A]">변칙 현상 시민 긴급 제보</h3>
+                </div>
+                <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-md">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="report-form" onsubmit="submitReport(event)" class="mt-5 space-y-4 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">발생 지역 및 상세 위치 *</label>
+                    <input type="text" required placeholder="예: 서울특별시 마포구 합정역 3번 출구 인근 골목" class="w-full px-3.5 py-2 rounded-md border border-slate-300 focus:outline-none focus:border-[#1E3A8A]">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">관측된 이상 징후 유형 *</label>
+                    <select class="w-full px-3.5 py-2 rounded-md border border-slate-300 focus:outline-none focus:border-[#1E3A8A] bg-white">
+                        <option>비정형 개체(괴이) 목격</option>
+                        <option>국지적 공간 왜곡 / 시계·나침반 오작동</option>
+                        <option>원인 불명 저주파 공명 / 급격한 기온 하강</option>
+                        <option>기타 미확인 변칙 현상</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">상세 목격 내용 *</label>
+                    <textarea rows="3" required placeholder="현장에서 목격한 특이사항을 간략히 기재해 주십시오. 직접 접근하거나 촬영하지 마십시오." class="w-full px-3.5 py-2 rounded-md border border-slate-300 focus:outline-none focus:border-[#1E3A8A]"></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeReportModal()" class="px-4 py-2 rounded-md border border-slate-300 text-slate-700 font-semibold hover:bg-slate-50">취소</button>
+                    <button type="submit" class="px-5 py-2 rounded-md bg-[#1E3A8A] text-white font-semibold hover:bg-[#1E40AF]">관제센터로 전송</button>
+                </div>
+            </form>
+            <div id="report-success" class="hidden mt-5 p-4 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm space-y-2">
+                <div class="font-bold flex items-center gap-1.5">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                    <span>제보가 지맥관측예보본부 관제실로 접수되었습니다.</span>
+                </div>
+                <p class="text-xs text-emerald-800">관할 구역 특수대응부 요원이 좌표를 확인 중입니다. 안전을 위해 현장에서 즉시 이탈해 주십시오.</p>
+                <div class="pt-2 text-right">
+                    <button onclick="closeReportModal()" class="px-4 py-1.5 rounded bg-emerald-700 text-white text-xs font-semibold">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 기밀 열람 인증 모달 (화이트 배경 스타일) -->
+    <div id="auth-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 modal-backdrop">
+        <div class="bg-white border border-zinc-300 text-[#09090B] rounded-lg w-full max-w-md p-6 sm:p-8 shadow-2xl modal-box">
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-200">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="shield-alert" class="w-5 h-5 text-[#09090B]"></i>
+                    <h3 class="text-base font-bold font-mono-code text-[#09090B]">N.A.D.R. CLASSIFIED ACCESS</h3>
+                </div>
+                <button onclick="closeAuthModal()" class="text-zinc-400 hover:text-zinc-800 p-1 rounded">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form onsubmit="verifyClearance(event)" class="mt-5 space-y-4">
+                <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                    인가된 1급 연구원 및 지휘부 전용 아카이브입니다. 금일 관측된 <span class="text-[#09090B] font-semibold">사방위 지맥 공명 순서</span>를 영문 방위 약어(4자리)로 입력하십시오.
+                </p>
+                <div>
+                    <input
+                        type="password"
+                        id="clearance-input"
+                        maxlength="8"
+                        placeholder="4자리 영문 방위 코드 입력"
+                        class="w-full px-3.5 py-2.5 rounded-md bg-zinc-50 border border-zinc-300 text-[#09090B] font-mono-code text-sm tracking-widest uppercase focus:outline-none focus:border-[#09090B]"
+                    >
+                    <p id="auth-error" class="hidden text-xs text-red-600 font-mono-code mt-1.5">ACCESS DENIED: 지맥 공명 위상 코드가 일치하지 않습니다.</p>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeAuthModal()" class="px-4 py-2 rounded-md bg-white border border-zinc-300 text-zinc-700 text-xs font-semibold hover:bg-zinc-100">닫기</button>
+                    <button type="submit" class="px-5 py-2 rounded-md bg-[#09090B] text-white text-xs font-mono-code font-bold hover:bg-zinc-800">인증 실행</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- =====================================================================
+         [JAVASCRIPT] 데이터 및 인터랙션 로직
+         ===================================================================== -->
+    <script>
+        // =====================================================================
+        // 1. 사방위 요원 데이터 (AGENT-01 ~ AGENT-04)
+        // =====================================================================
+        const AGENTS = [
+            {
+                code: 'AGENT-01',
+                classifiedCode: 'NADR-EX-E01',
+                name: '이채원',
+                age: '23',
+                gender: 'XX',
+                guardian: '청룡 (靑龍)',
+                sector: '동방 관할 구역',
+                publicRole: '동방 대응 요원',
+                image: 'https://i.ibb.co/xtJn8kqs/image.png',
+                badgeColor: 'bg-sky-50 text-sky-900 border-sky-200',
+                accentBorder: 'border-t-4 border-t-sky-600',
+                publicTraits: "감정에 휘둘리기보다는 논리와 규율을 우선시하며, 판단을 내릴 때 언제나 가장 효율적이고 확실한 답을 찾아낸다. 리더라는 자리에 부합하듯 자신과 타인 모두에게 대단히 엄격한 완벽주의자다. 자신에게 맡겨진 역할과 사명을 완수하는 것에 책임감을 느끼며, 단 한 치의 오차나 실수도 용납하지 않는다. 지는 것을 겪어보지 못한 사람처럼 타인과의 내기나 승부, 혹은 자신과의 싸움에서조차 상대를 압도해야 직성이 풀리는 강한 승부욕을 지녔다. 그 유능함과 흔들림 없는 태도 덕분에 N.A.D.R. 연구진들에게 가장 협조적이고 안전한 '이상적인 리더'로 평가받는다.",
+                like: '운동 | 계획 세우기 | 팀원들',
+                hate: '무능함 | 혼란 | 감정적 충돌',
+                scary: '통제력을 잃고 균형이 무너지는 것',
+                classifiedTraits: [
+                    "완벽주의와 강박적인 리더십의 이면에는, '리더인 자신이 허점을 보이면 팀 전체가 와해된다'는 지독한 자존심과 극심한 불안감이 자리 잡고 있다. 예측할 수 없는 변수를 견디지 못해 모든 상황을 자신의 통제 아래 두려 집착하며, 조금의 균열조차 결코 용납하지 않는다. 채원의 이성적인 태도는 사실 솟구치는 공포를 억누르기 위해 스스로 세운 방어기제에 가깝다.",
+                    "밤마다 손끝과 목덜미에서 돋아나는 청록색 뱀 비늘. 침식을 목격할 때마다 그녀의 완벽한 세계는 조금씩 균열을 일으킨다. 자신이 가장 먼저 무너질지도 모른다는 공포를 숨기기 위해, 그녀는 매일 아침 더욱 완벽하게 제복과 가죽 장갑을 꽉 껴입는다. 승부욕을 무기 삼아 신성의 침식마저 '자신의 의지로 눌러 이겨내야 할 대상'으로 치부하지만, 장갑 속에서 점점 넓어지는 비늘을 마주하며 예민하게 날이 서는 마음을 겨우 숨기고 있을 뿐이다."
+                ],
+                classifiedNote: '동방 구역 전담 매개체. 완벽주의적 책임감을 자극해 과부하 작전에 자발적으로 투입되도록 유도 중. 신경계 마모 징후가 포착되었으나 본인은 통증을 은폐하고 규율 준수에만 집착한다.',
+                interviewDate: '2025.03.13 이전',
+                interviewLog: [
+                    { speaker: '면접관', text: '본인이 본 연구원에 지원하게 된 이유는 무엇입니까?' },
+                    { speaker: '이채원', text: '제가 가진 능력을 좀 더 의미 있는 곳에 사용하고 싶었습니다. 변칙 개체에 대한 피해가 계속 발생하고 있다는 것도 알고 있고요.' },
+                    { speaker: '면접관', text: '본인의 능력이라고 하면 구체적으로 어떤 것을 말하는 겁니까?' },
+                    { speaker: '이채원', text: '상황을 빠르게 파악하고, 여러 사람의 의견을 정리하는 능력입니다. 제가 모든 일을 잘한다고 생각하지는 않습니다. 다만 누군가 판단해야 하는 상황이라면 피하지 않을 자신은 있습니다.' },
+                    { speaker: '면접관', text: '연구원에서는 사방신의 신성을 인체에 이식하는 실험을 진행할 예정입니다. 일반적인 신체 강화와는 다릅니다. 이식 대상자는 기존에 없던 감각이나 능력을 얻게 될 수 있지만, 신체에 상당한 부담이 발생할 가능성도 있습니다.' },
+                    { speaker: '이채원', text: '이식된 신성은 사람마다 다르게 발현되는 건가요?' },
+                    { speaker: '면접관', text: '그렇습니다. 대상자의 적합성에 따라 발현 양상과 운용 방식이 달라집니다.' },
+                    { speaker: '이채원', text: '그렇다면 이식 이후의 훈련도 중요하겠네요. 능력이 강해지는 것보다 제대로 통제하는 게 먼저라고 생각합니다.' },
+                    { speaker: '면접관', text: '본인이 원하는 역할이 있습니까?' },
+                    { speaker: '이채원', text: '가능하다면 작전 지휘를 맡고 싶습니다. 물론 다른 지원자들과 함께 평가받아야겠지만요.' },
+                    { speaker: '면접관', text: '마지막으로 묻겠습니다. 신성 이식 과정에서 예상치 못한 신체적·정신적 변화가 발생하더라도 참여를 지속할 의사가 있습니까?' },
+                    { speaker: '이채원', text: '네. 제가 내린 결정인 만큼 끝까지 책임지겠습니다.' },
+                    { speaker: '면접관', text: '알겠습니다. 면접은 여기까지입니다. 그럼 이식 당일에 뵙겠습니다.(대화 종료)' }
+                ],
+                interviewerOpinion: '면접관 의견 — 책임감과 통솔 능력이 우수함. 자기 판단에 대한 확신이 강하며, 지휘 인력으로서의 적합성이 높다고 판단됨.'
+            },
+            {
+                code: 'AGENT-02',
+                classifiedCode: 'NADR-EX-W02',
+                name: '백시연',
+                age: '21',
+                gender: 'XX',
+                guardian: '백호 (白虎)',
+                sector: '서방 관할 구역',
+                publicRole: '서방 대응 요원',
+                image: 'https://i.ibb.co/dH69nF8/image.png',
+                badgeColor: 'bg-slate-100 text-slate-900 border-slate-300',
+                accentBorder: 'border-t-4 border-t-slate-700',
+                publicTraits: "N.A.D.R.의 위선과 통제, 세계를 구한다는 거창한 명분 따위는 헛소리로 치부하며 비웃는다. 누군가에게 의지하거나 집단에 안주하는 것을 혐오하는 극단적인 독립성을 지녔다. 타인의 눈치를 보지 않고 자신이 느낀 바를 날것 그대로 내뱉는 솔직함 때문에 상처를 주는 일도 잦지만, 거짓말이나 뒤통수를 치는 짓은 절대 하지 않는다. 늘 반항을 일삼아 연구원들 사이에선 '언제 터질지 모르는 가장 위험한 요원'으로 찍혀 있다.",
+                like: '음악 | 스릴 | 자유로운 분위기',
+                hate: '명령 | 거짓말 | 구속',
+                scary: '멤버들에게 먼저 이를 드러내고 공격하게 되는 것',
+                classifiedTraits: [
+                    "날이 서 있는 거친 겉모습과 달리, 일단 '내 사람'이라 받아들인 존재에게는 기꺼이 자신을 내던지는 의리의 소유자다. 경계심이 워낙 강해 타인에게 벽을 두껍게 치지만, 함께 사방신의 굴레에 갇혀 고통받는 멤버들에 대한 마음만은 진심이다. 다정한 위로나 살가운 말은 건네지 못해도, 자신이 먼저 험악하게 날을 세워 외부의 위협과 시선을 가로막는 투박한 방식으로 그들을 지킨다.",
+                    "시연이 이토록 냉소적이고 거칠게 구는 것은 '더 이상 타인에게 휘둘리거나 빼앗기지 않겠다'는 방어기제에 가깝다. 늘 극심한 두통과 충동에 시달리지만, 약한 소리를 내는 대신 차라리 벽을 부수고 고함을 지르는 쪽을 택한다. 무녀와 기관의 위선을 본능적으로 꿰뚫어보고 있기에, 스스로 악역(위악)을 자처하면서까지 멤버들에게 가해지는 침식과 통제의 칼날을 가장 앞에서 몸으로 받아내고 있다."
+                ],
+                classifiedNote: '서방 구역 적합도 최고치. 지휘부 명령 불복종 빈도가 높으나 현장 섬멸 속도는 타 요원을 압도한다. 구속구 및 진정 투여 빈도를 상향 유지 중이며, 황룡 의식의 진실에 가장 근접해 있어 격리 감시가 요구된다.',
+                interviewDate: '2026.01.16 이전',
+                interviewLog: [
+                    { speaker: '면접관', text: '본인이 본 연구원에 지원하게 된 이유는 무엇입니까?' },
+                    { speaker: '백시연', text: '제가 할 수 있는 일이 있다고 해서 왔습니다.' },
+                    { speaker: '면접관', text: '그게 전부입니까?' },
+                    { speaker: '백시연', text: '네. 더 들어야 할 이유가 있습니까?' },
+                    { speaker: '면접관', text: '상당히 직설적이군요. 본 연구원은 일반적인 직장과 다릅니다. 신성 이식 이후에는 변칙 개체와 직접 대면하는 임무를 수행하게 됩니다.' },
+                    { speaker: '백시연', text: '알고 있습니다.' },
+                    { speaker: '면접관', text: '신성 이식에 관해서는 어떻게 생각합니까? 백호의 신성은 다른 신성과 비교해 신체적 부담과 공격성이 높게 나타날 수 있습니다.' },
+                    { speaker: '백시연', text: '그건 제 문제 아닌가요?' },
+                    { speaker: '면접관', text: '본인뿐 아니라 주변 인원에게도 영향을 줄 수 있습니다.' },
+                    { speaker: '백시연', text: '그러면 통제하는 방법을 알려주시면 됩니다. 못 하겠으면 애초에 뽑지 마시고요.' },
+                    { speaker: '면접관', text: '본인의 능력을 통제하지 못하는 상황이 발생한다면 어떻게 대처하겠습니까?' },
+                    { speaker: '백시연', text: '일단 주변 사람부터 떨어뜨리겠습니다. 제가 다치는 건 상관없는데, 다른 사람이 다치는 건 귀찮아지니까요.' },
+                    { speaker: '면접관', text: '동료와의 협력에는 문제가 없겠습니까?' },
+                    { speaker: '백시연', text: '먼저 시비만 안 걸면 됩니다. 저도 쓸데없이 싸우는 건 싫거든요.' },
+                    { speaker: '면접관', text: '마지막으로 묻겠습니다. 신성 이식 과정에서 예상치 못한 신체적·정신적 변화가 발생하더라도 참여를 지속할 의사가 있습니까?' },
+                    { speaker: '백시연', text: '중간에 그만두면 안 되는 겁니까?' },
+                    { speaker: '면접관', text: '본인의 의사에 따라 판단할 수 있습니다.' },
+                    { speaker: '백시연', text: '그럼 계속하겠습니다.' },
+                    { speaker: '면접관', text: '알겠습니다. 면접은 여기까지입니다. 그럼 이식 당일에 뵙겠습니다.(대화 종료)' }
+                ],
+                interviewerOpinion: '면접관 의견 — 대인 관계에서 다소 공격적인 태도가 관찰됨. 위기 상황에서의 판단과 대응 능력은 추가 검증이 필요함.'
+            },
+            {
+                code: 'AGENT-03',
+                classifiedCode: 'NADR-EX-S03',
+                name: '김도하',
+                age: '20',
+                gender: 'XX',
+                guardian: '주작 (朱雀)',
+                sector: '남방 관할 구역',
+                publicRole: '남방 대응 요원',
+                image: 'https://i.ibb.co/Y46rpsXJ/image.png',
+                badgeColor: 'bg-rose-50 text-rose-900 border-rose-200',
+                accentBorder: 'border-t-4 border-t-rose-600',
+                publicTraits: "사람을 좋아하고 정이 많아 누구에게나 쉽게 다가가며, 특유의 눈웃음과 싹싹한 애교로 무거운 공기를 누그러뜨린다. 눈에 보이는 모든 것에 눈을 반짝이는 호기심 천국이자 분위기 메이커다. 상대로부터 칭찬이나 사랑을 받을 때 가장 큰 행복을 느끼며, 타인에게 인정받고자 하는 욕구가 대단히 강하다. 조금이라도 잘한 일이 생기면 언니들(멤버들)이나 연구원들에게 달려가 자랑하고 스킨십을 시도하는 등, 미워할 수 없는 사랑스러움을 보인다.",
+                like: '사진 | 디저트 | 친구들 | 귀여운 것',
+                hate: '혼자 있는 것 | 무시당하는 것',
+                scary: '버림받는 것 | 자신을 안아주던 언니들을 태워버리게 되는 것',
+                classifiedTraits: [
+                    "천진난만한 발랄함과 과도한 인정 욕구의 이면에는, '누군가에게 필요한 존재가 되지 못하면 버려질지도 모른다'는 지독한 불안과 애정결핍이 깔려 있다. 언제든 대체될 수 있다는 공포 탓에, 타인이 원하는 밝은 얼굴을 연기하며 자신의 쓸모를 끊임없이 확인받으려 한다. 도하의 호기심과 웃음은 사실 자신의 가치를 증명해 관심을 끌기 위한 서글픈 방어기제에 가깝다.",
+                    "주작의 신성을 이식받은 탓에 몸속에서 솟구치는 과열과 발화의 고통은 사방신 중 가장 괴롭고 강렬하다. 타들어가는 고통이 몸을 옥죄어올 때마다 도하는 붕대를 감은 손을 꼭 쥔 채 더욱 미친 듯이 웃어대고 장난을 친다. 신성의 침식에 영혼이 타들어가는 절규를 '아이 같은 웃음소리' 뒤로 은폐하며, 자신이 괴물로 변해 언니들에게 버려지지 않기를 매일 밤 눈물로 기도하고 있다."
+                ],
+                classifiedNote: '남방 화기 파동 매개인. 타인의 인정과 애정에 대한 갈망이 극도로 높아 정서적 보상만으로도 위험 구역 단독 정화를 수행한다. 주작의 열기 역류로 체온 및 심박 이상이 반복되나 본인은 이를 인지하지 못한다.',
+                interviewDate: '2025.07.29 이전',
+                interviewLog: [
+                    { speaker: '면접관', text: '본인이 본 연구원에 지원하게 된 이유는 무엇입니까?' },
+                    { speaker: '김도하', text: '음, 처음에는 조금 무서웠어요. 그런데 제가 도움이 될 수 있다고 하셨잖아요. 제가 할 수 있는 일이 있다면 해보고 싶었어요.' },
+                    { speaker: '면접관', text: '무섭다고 하면서도 지원한 이유가 있습니까?' },
+                    { speaker: '김도하', text: '무섭다고 아무것도 안 할 수는 없으니까요. 그리고 저 말고도 무서워하는 사람들이 많을 거잖아요.' },
+                    { speaker: '면접관', text: '신성 이식에 관해 설명을 들었을 겁니다. 사방신 중 주작의 신성을 이식받게 될 가능성이 높습니다. 불과 열에 관련된 능력이 발현될 것으로 예상하고 있습니다.' },
+                    { speaker: '김도하', text: '주작이면 정말 불을 사용할 수 있는 건가요?' },
+                    { speaker: '면접관', text: '현재로서는 가능성이 높다고 보고 있습니다.' },
+                    { speaker: '김도하', text: '와, 신기하다. 그런데 혹시 불이 제 몸 안에서 나오는 건가요? 아니면 손에서만 나오는 건가요?' },
+                    { speaker: '면접관', text: '구체적인 발현 방식은 이식 이후 확인해야 합니다.' },
+                    { speaker: '김도하', text: '그렇구나. 그럼 혹시 제가 불을 너무 많이 사용하면 다른 사람들도 다칠 수 있나요?' },
+                    { speaker: '면접관', text: '능력 운용에 따라 주변 환경에 영향을 줄 가능성은 있습니다. 그래서 별도의 통제 훈련을 진행할 예정입니다.' },
+                    { speaker: '김도하', text: '그럼 열심히 배울게요. 제가 잘못해서 다른 사람까지 다치는 건 싫거든요.' },
+                    { speaker: '면접관', text: '마지막으로 묻겠습니다. 신성 이식 과정에서 예상치 못한 신체적·정신적 변화가 발생하더라도 참여를 지속할 의사가 있습니까?' },
+                    { speaker: '김도하', text: '네! 조금 무섭기는 하지만 해볼래요. 제가 잘 버티면 되는 거잖아요.' },
+                    { speaker: '면접관', text: '알겠습니다. 면접은 여기까지입니다. 그럼 이식 당일에 뵙겠습니다.(대화 종료)' }
+                ],
+                interviewerOpinion: '면접관 의견 — 낯선 환경에서도 적응력이 양호함. 타인에 대한 배려와 협동 의지가 강하며, 긍정적인 태도가 두드러짐.'
+            },
+            {
+                code: 'AGENT-04',
+                classifiedCode: 'NADR-EX-N04',
+                name: '문서현',
+                age: '24',
+                gender: 'XX',
+                guardian: '현무 (玄武)',
+                sector: '북방 관할 구역',
+                publicRole: '북방 대응 요원',
+                image: 'https://i.ibb.co/8Dr3GsxJ/image.png',
+                badgeColor: 'bg-indigo-50 text-indigo-900 border-indigo-200',
+                accentBorder: 'border-t-4 border-t-indigo-700',
+                publicTraits: "상황을 판단하는 눈이 철저히 현실적이라, 낭만이나 막연한 희망 따위는 기대하지 않는다. 어설픈 위로나 동정은 그녀에게 아무런 가치가 없으며, 언제나 발생할 수 있는 최악의 상황만을 계산하고 대비한다. 타인이 보기에 이는 냉정한 체념이나 무관심처럼 보이지만, 실상은 그 누구보다 강인한 인내심으로 자기 자신을 단단히 눌러 앉히고 있을 뿐이다. 아무리 가혹한 통제나 통증이 가해져도 불평 한마디 없이 묵묵히 견뎌낸다. 어릴 적부터 타인을 향한 '헌신'을 당연한 의무로 교육받고 자란 듯, 스스로를 희생하는 행위에 망설임이 없다.",
+                like: '조용한 시간 | 따뜻한 음식 | 동생들',
+                hate: '소란 | 무례함 | 배신하는 것',
+                scary: '모두를 오염시키는 것(자신이 무너지는 것)',
+                classifiedTraits: [
+                    "겉으로 보이는 이 단단함과 무감각함의 이면에는, '자신이 무너지면 모든 것이 끝난다'는 지독한 강박과 자학적인 헌신이 자리 잡고 있다. 그녀가 입을 열지 않는 이유는 단순한 과묵함이 아니다. '내가 전부 안고 침묵하면 네 사람은 살아남을 수 있다'는 현실적이고도 잔혹한 계산. 이무기의 본질을 가장 먼저 눈치채버린 탓에, 조금이라도 방심하여 입을 놀렸다간 다른 멤버들을 오염시킬 것이라 믿기 때문이다.",
+                    "현무의 신성을 이식받은 대가로 서현의 몸은 매일 밤 깊은 심해에 가라앉은 듯 끔찍한 수압과 한기에 짓눌린다. 독기를 억누를수록 성대가 얼어붙어 목소리를 잃어가고, 손끝부터 서서히 감각이 무뎌지며 차가운 돌껍질처럼 딱딱하게 굳어간다. 고통을 내뱉는 순간 억눌러온 독기가 터져 나올 것을 알기에, 스스로 입을 틀어막고 방파제가 되어 침묵할 뿐이다. 감각이 지워지고 자아가 사라져 가는 공포 속에서도, 그녀는 묵묵히 홀로 깊고 어두운 수심 아래로 걸어 들어간다."
+                ],
+                classifiedNote: '북방 방어 및 피해 흡수 전담 개체. 타 요원에게 전이될 치명적 침식을 대신 받아내는 완충 장치로 활용 중이다. 극심한 생체 손상에도 거부 반응 없이 순응하며, 의례자문위원회에서 가장 안정적인 제물로 분류한다.',
+                interviewDate: '2026.10.08 이전',
+                interviewLog: [
+                    { speaker: '면접관', text: '본인이 본 연구원에 지원하게 된 이유는 무엇입니까?' },
+                    { speaker: '문서현', text: '제가 도움이 될 수 있을 것 같아서요.' },
+                    { speaker: '면접관', text: '본인이 생각하는 도움이라는 건 어떤 의미입니까?' },
+                    { speaker: '문서현', text: '누군가 해야 하는 일이라면 제가 해도 괜찮다고 생각합니다. 제가 조금 더 힘들더라도 다른 사람들이 무사할 수 있다면 그걸로 충분합니다.' },
+                    { speaker: '면접관', text: '신성 이식은 상당한 신체적 부담을 동반할 수 있습니다. 특히 현무의 신성은 압력과 수분, 저온 현상 등과 관련된 반응이 예상됩니다.' },
+                    { speaker: '문서현', text: '이식받은 사람마다 견딜 수 있는 정도가 다른가요?' },
+                    { speaker: '면접관', text: '그렇습니다. 개인의 신체적 적합도에 따라 차이가 발생합니다.' },
+                    { speaker: '문서현', text: '그렇다면 제가 다른 사람들보다 더 많이 견딜 수 있다면, 그만큼 더 도움이 될 수도 있겠네요.' },
+                    { speaker: '면접관', text: '본인의 한계를 넘어서더라도 임무를 수행할 생각입니까?' },
+                    { speaker: '문서현', text: '한계라는 게 어디까지인지 아직 모르니까요. 일단 할 수 있는 데까지 해보고 싶습니다.' },
+                    { speaker: '면접관', text: '무리한 판단일 수도 있습니다. 본인의 상태를 정확히 전달하는 것도 중요한 능력입니다.' },
+                    { speaker: '문서현', text: '네. 노력하겠습니다.' },
+                    { speaker: '면접관', text: '다른 지원자들과 함께 임무를 수행하게 될 텐데, 협력에 어려움은 없겠습니까?' },
+                    { speaker: '문서현', text: '괜찮습니다. 제가 먼저 다가가는 편은 아니지만, 누군가 말을 걸어주면 잘 지낼 수 있습니다.' },
+                    { speaker: '면접관', text: '마지막으로 묻겠습니다. 신성 이식 과정에서 예상치 못한 신체적·정신적 변화가 발생하더라도 참여를 지속할 의사가 있습니까?' },
+                    { speaker: '문서현', text: '네. 제가 맡은 일이라면 끝까지 해보고 싶습니다.' },
+                    { speaker: '면접관', text: '알겠습니다. 면접은 여기까지입니다. 그럼 이식 당일에 뵙겠습니다.(대화 종료)' }
+                ],
+                interviewerOpinion: '면접관 의견 — 차분하고 인내심이 강함. 타인의 요구를 우선시하는 경향이 있으며, 본인의 신체적 한계를 과소평가할 가능성이 있음.'
+            }
+        ];
+
+        // =====================================================================
+        // 2. 동향 및 보도자료 데이터 (태그별 색상 구분 적용)
+        // =====================================================================
+        const NOTICES = [
+            {
+                tag: '정기 관측',
+                tagClass: 'bg-blue-50 text-blue-800 border-blue-200',
+                date: '2026.11.18',
+                title: '2026년 11월 3주차 수도권 지맥 파동 정례 관측 결과 발표 (전 구역 정상)',
+                body: [
+                    '국립방위변칙연구원 지맥관측예보본부는 2026년 11월 3주차 한반도 중심 지맥 및 수도권 42개 주요 관측 거점의 정례 계측 결과를 발표합니다.',
+                    '금주 평균 지맥 진동수는 14.2Hz로 국가 안전 기준치(18.0Hz 미만) 이내에서 매우 안정적으로 유지되고 있으며, 국지적 변칙 파동 3건 모두 사신수 특수대응부의 선제 출동을 통해 인명·재산 피해 없이 정화 완료되었습니다.',
+                    '시민 여러분께서는 안심하시고 일상생활을 영위하시기 바라며, 야간 폐건물 출입 시에만 기본 안전 수칙을 준수해 주시기 바랍니다.'
+                ]
+            },
+            {
+                tag: '안전 매뉴얼',
+                tagClass: 'bg-amber-50 text-amber-800 border-amber-200',
+                date: '2026.11.10',
+                title: '동절기 심야 시간대 안개 및 저시정 구간 변칙 현상 오인 신고 안내',
+                body: [
+                    '기온 하강에 따른 한강 변 및 도심 고지대 복사안개 발생이 잦아지면서, 자연 기상 현상을 변칙 현상(괴이)으로 오인하여 긴급 신고하는 사례가 증가하고 있습니다.',
+                    '단순 안개나 가로등 빛 번짐은 변칙 현상이 아니나, 안개 내부에서 비정상적인 저주파 울림이 들리거나 주변 온도가 순식간에 영하권으로 급락하는 경우에는 즉시 반경 300m 밖으로 이동한 뒤 119-0으로 신고해 주십시오.',
+                    '모든 긴급 제보는 관제센터에서 실시간 지맥 파동 데이터와 대조하여 3분 이내에 출동 여부를 판정합니다.'
+                ]
+            },
+            {
+                tag: '기관 공지',
+                tagClass: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                date: '2026.11.03',
+                title: '중앙 지맥 정기 점검에 따른 종로구 일대 심야 지맥 파동 안내',
+                body: [
+                    '의례자문위원회 및 지맥관측예보본부는 국가 중앙 지맥의 파동 균형을 재조정하기 위한 정기 점검을 실시합니다.',
+                    '점검 시간 중 청사 인근 반경 500m 내외에서 미세한 정전기 현상이나 일시적인 나침반 편차, 저주파 공명이 감지될 수 있으나 이는 정상적인 지맥 조율 과정이므로 놀라지 마시기 바랍니다.',
+                    '점검 기간 동안 일반인의 청사 보안 구역 출입은 제한되며, 모든 대중교통 및 도로는 정상 통행이 가능합니다.'
+                ]
+            }
+        ];
+
+        // =====================================================================
+        // 3. 초기 렌더링 함수
+        // =====================================================================
+        function renderAgents() {
+            const grid = document.getElementById('agents-grid');
+            grid.innerHTML = AGENTS.map((agent, idx) => `
+                <article onclick="openAgentModal(${idx})"
+                    class="group cursor-pointer bg-white border border-slate-200 rounded-lg overflow-hidden shadow-2xs hover:shadow-md hover:border-slate-400 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[4/5] w-full bg-slate-100 border-b border-slate-200 overflow-hidden relative">
+                            <img src="${agent.image}" alt="${agent.name} 공식 프로필 사진" class="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 text-[11px] font-mono-code font-bold bg-white/95 text-slate-800 border border-slate-300 rounded">${agent.code}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="text-xs font-medium text-slate-500 mb-0.5">${agent.publicRole}</div>
+                            <div class="flex items-baseline justify-between gap-2">
+                                <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">${agent.name}</h3>
+                                <span class="text-xs font-mono-code text-slate-400">${agent.guardian.split(' ')[0]}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-medium text-slate-600 group-hover:bg-slate-100 group-hover:text-slate-900 transition-colors">
+                        <span>프로필 열람</span>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderClassifiedAgents() {
+            const grid = document.getElementById('classified-agents-grid');
+            if (!grid) return;
+            grid.innerHTML = AGENTS.map((agent, idx) => `
+                <article onclick="openClassifiedAgentModal(${idx})"
+                    class="group cursor-pointer bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden hover:border-red-700 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[4/5] w-full bg-black border-b border-zinc-800 overflow-hidden relative">
+                            <img src="${agent.image}" alt="${agent.name} 기밀 프로필 사진" class="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300">
+                            <span class="absolute top-3 left-3 px-2 py-0.5 text-[11px] font-mono-code font-bold bg-black/90 text-red-400 border border-red-900/70 rounded">${agent.classifiedCode}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="text-xs font-medium text-red-400/90 mb-0.5">${agent.sector} 매개체</div>
+                            <div class="flex items-baseline justify-between gap-2">
+                                <h3 class="text-lg font-bold text-white group-hover:text-red-400 transition-colors">${agent.name}</h3>
+                                <span class="text-xs font-mono-code text-zinc-500">${agent.guardian.split(' ')[0]}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2.5 bg-black/70 border-t border-zinc-800 flex items-center justify-between text-xs font-medium text-zinc-400 group-hover:bg-red-950/30 group-hover:text-red-300 transition-colors">
+                        <span>기밀 관찰 기록 열람</span>
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderClassifiedInterviews() {
+            const list = document.getElementById('classified-interviews-list');
+            if (!list) return;
+            list.innerHTML = AGENTS.map((agent, idx) => `
+                <button onclick="openInterviewModal(${idx})"
+                    class="text-left p-4 sm:p-5 rounded bg-black/70 border border-zinc-800 hover:border-red-700 hover:bg-zinc-900/80 transition-all flex items-center justify-between gap-4 group">
+                    <div class="space-y-1.5 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2 py-0.5 text-[11px] font-mono-code font-bold bg-red-950/90 text-red-300 border border-red-900/80 rounded">은폐 기록</span>
+                            <span class="text-xs font-mono-code text-zinc-400">${agent.classifiedCode}</span>
+                        </div>
+                        <div class="text-sm sm:text-base font-bold text-white group-hover:text-red-400 transition-colors truncate">
+                            N.A.D.R. 인사 기록 — ${agent.name}
+                        </div>
+                        <div class="text-xs font-mono-code text-zinc-500">
+                            면접일: ${agent.interviewDate}
+                        </div>
+                    </div>
+                    <div class="shrink-0 flex items-center gap-1.5 text-xs font-mono-code text-zinc-400 group-hover:text-red-300">
+                        <span>열람</span>
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        function openInterviewModal(idx) {
+            const agent = AGENTS[idx];
+            const container = document.getElementById('agent-modal-content');
+            container.innerHTML = `
+                <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-300">
+                    <div class="space-y-1.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2 py-0.5 text-[11px] font-mono-code font-bold bg-[#09090B] text-white rounded">CONCEALED ARCHIVE</span>
+                            <span class="px-2 py-0.5 text-[11px] font-mono-code font-semibold bg-red-50 text-red-800 border border-red-200 rounded">${agent.classifiedCode}</span>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-extrabold font-mono-code text-[#09090B] tracking-tight">
+                            N.A.D.R. 인사 기록 —————————— 기밀 문서
+                        </h3>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-700">
+                            대상자: <strong class="text-[#09090B]">${agent.name}</strong> &nbsp;/&nbsp; 면접일: <span class="font-mono-code">${agent.interviewDate}</span>
+                        </p>
+                    </div>
+                    <button onclick="closeAgentModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-md hover:bg-slate-100 shrink-0">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="mt-5 space-y-3 bg-slate-50 border border-slate-200 rounded-md p-4 sm:p-5 text-sm leading-relaxed">
+                    ${agent.interviewLog.map(entry => {
+                        const isInterviewer = entry.speaker === '면접관';
+                        return `
+                            <div class="${isInterviewer ? 'text-slate-500' : 'text-[#09090B] font-medium pl-3 border-l-2 border-slate-400'}">
+                                <span class="font-mono-code text-xs font-bold ${isInterviewer ? 'text-slate-600' : 'text-red-800'} mr-1.5">${entry.speaker}:</span>
+                                <span>${entry.text}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                <div class="mt-4 p-4 rounded-md bg-[#09090B] text-zinc-100 text-xs sm:text-sm leading-relaxed border border-zinc-800">
+                    ${agent.interviewerOpinion}
+                </div>
+
+                <div class="mt-5 pt-4 border-t border-slate-200 flex items-center justify-between text-xs">
+                    <button onclick="openClassifiedAgentModal(${idx})" class="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#09090B] font-semibold">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+                        <span>${agent.name} 기밀 관찰 프로필로 이동</span>
+                    </button>
+                    <button onclick="closeAgentModal()" class="px-4 py-1.5 rounded bg-[#09090B] text-white font-semibold">닫기</button>
+                </div>
+            `;
+            document.getElementById('agent-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function openClassifiedAgentModal(idx) {
+            const agent = AGENTS[idx];
+            const container = document.getElementById('agent-modal-content');
+            container.innerHTML = `
+                <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+                    <div class="flex items-center gap-4">
+                        <img src="${agent.image}" alt="${agent.name}" class="w-16 h-20 rounded object-cover object-top border border-slate-300 shrink-0">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 text-[11px] font-mono-code font-bold bg-red-950 text-red-200 rounded">${agent.classifiedCode} // TOP SECRET</span>
+                                <span class="px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-800 border border-slate-300 rounded">${agent.guardian}</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#0F172A]">${agent.name}</h3>
+                            <p class="text-sm font-medium text-red-700 mt-0.5">${agent.sector} 제물 매개체 (대외 직책: ${agent.publicRole})</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAgentModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-md hover:bg-slate-100">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="mt-5 grid grid-cols-3 gap-3 text-xs">
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">연령</div>
+                        <div class="font-bold text-slate-800 text-sm">${agent.age}세</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">성별</div>
+                        <div class="font-bold text-slate-800 font-mono-code text-sm">${agent.gender}</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">의식 배정</div>
+                        <div class="font-bold text-red-800 text-sm">황룡 강림 매개체</div>
+                    </div>
+                </div>
+
+                <div class="mt-5 space-y-4">
+                    <div>
+                        <h4 class="text-xs font-mono-code font-bold text-red-700 uppercase mb-1.5">기밀 프로필 // 심층 성향 및 신성 침식 기록</h4>
+                        <div class="text-sm text-slate-800 leading-relaxed bg-red-50/50 p-4 rounded-md border border-red-200 space-y-3">
+                            ${agent.classifiedTraits.map(p => `<p>${p}</p>`).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-mono-code font-bold text-red-900 uppercase mb-1.5">1급 기밀 생체·심리 통제 관찰 일지</h4>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-zinc-100 p-4 rounded-md border border-zinc-300">${agent.classifiedNote}</p>
+                    </div>
+
+                    <div class="p-3.5 rounded-md bg-zinc-900 text-zinc-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <div>
+                            <span class="font-mono-code text-red-400 font-bold mr-2">CONCEALED RECORD</span>
+                            <span>N.A.D.R. 인사 기록 — 기밀 문서 (${agent.interviewDate})</span>
+                        </div>
+                        <button onclick="openInterviewModal(${idx})" class="px-3 py-1.5 rounded bg-red-900 hover:bg-red-800 text-white font-semibold transition-colors">
+                            면접 녹취록 열람 →
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                            <div class="font-mono-code font-bold text-slate-800 mb-1">LIKE</div>
+                            <div class="text-slate-600">${agent.like}</div>
+                        </div>
+                        <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                            <div class="font-mono-code font-bold text-slate-800 mb-1">HATE</div>
+                            <div class="text-slate-600">${agent.hate}</div>
+                        </div>
+                        <div class="p-3.5 rounded-md bg-red-50/70 border border-red-200">
+                            <div class="font-mono-code font-bold text-red-800 mb-1">SCARY</div>
+                            <div class="text-red-900 font-medium">${agent.scary}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('agent-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function openClassifiedAdvisorModal() {
+            const container = document.getElementById('agent-modal-content');
+            container.innerHTML = `
+                <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.ibb.co/kstb9YZN/IMG-5726.png" alt="임흑아 기밀 프로필" class="w-16 h-20 rounded object-cover object-top border border-slate-300 shrink-0">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 text-[11px] font-mono-code font-bold bg-red-950 text-red-200 rounded">NADR-◼︎◼︎◼︎◼︎-000 // TOP SECRET</span>
+                                <span class="px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-800 border border-slate-300 rounded">황룡 의식 집행자</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#0F172A]">임흑아</h3>
+                            <p class="text-sm font-medium text-red-700 mt-0.5">의례자문위원회 실권자 (대외 직책: 특별 의례고문)</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAgentModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-md hover:bg-slate-100">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="mt-5 grid grid-cols-3 gap-3 text-xs">
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">연령</div>
+                        <div class="font-bold text-slate-800 text-sm">불명</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">성별</div>
+                        <div class="font-bold text-slate-800 font-mono-code text-sm">XY</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">관할 권한</div>
+                        <div class="font-bold text-red-800 text-sm">전 구역 통제권</div>
+                    </div>
+                </div>
+
+                <div class="mt-5 space-y-4">
+                    <div>
+                        <h4 class="text-xs font-mono-code font-bold text-red-700 uppercase mb-1.5">기밀 프로필 // 심층 성향 및 본질 기록</h4>
+                        <div class="text-sm text-slate-800 leading-relaxed bg-red-50/50 p-4 rounded-md border border-red-200 space-y-3">
+                            <p>항상 고요한 기류를 두르고 다니는 소년. 표정과 어조를 다스리는 감각이 기울어져 있어, 사태가 아무리 험악하게 틀어져도 나직하고 온화한 목소리를 가다듬는다. 대놓고 적의나 멸시를 드러내는 상대를 마주해도 결코 눈짓 하나 흔들리지 않으며, 그저 다정한 미소를 띤 채 뼈를 파고드는 신탁을 낮게 속삭일 뿐이다. 사방신의 그릇이 된 네 소녀를 따스하게 감싸 안는 구원자처럼 굴지만, 정작 자신의 진의(眞意)는 단 한 명에게도 내어주지 않은 채 냉정하게 제 목적지로 걸음을 옮긴다.</p>
+                            <p>사람에게 어설픈 배려나 동정을 베푸는 일 따위는 스스로의 격을 떨어뜨리는 낭비라 여긴다. 다만 어린 시절 집요하게 이식받은 신성한 규율과 무속적 기품 때문에, 그 누구를 상대하든 결점 없는 정갈한 예법을 내보인다. 그 완벽하게 단련된 위선적 태도가 대중과 연구진의 눈에는 거룩하고 숭고한 성자의 품격으로 비쳐지는 것이다.</p>
+                            <p>누군가 자신에게 품은 애정이나 두려움 따위의 감정은 고작 기만에 불과하다. 증명 불가능한 '마음'이나 '믿음' 같은 추상적인 기호는 아예 가치조차 두지 않는다. 그에게 있어 오직 손끝에 잡히는 핏빛 구슬, 서늘하게 빛나는 보석, 그리고 실체로 존재하는 신성의 정수만이 유일하게 신뢰할 수 있는 '사랑'이자 '진실'이다.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-mono-code font-bold text-red-900 uppercase mb-1.5">1급 기밀 생체·심리 통제 관찰 일지</h4>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-zinc-100 p-4 rounded-md border border-zinc-300">의례자문위원회 실권자이자 황룡 강림 의식의 실질적 집행자. 대외 직책은 특별 의례고문으로 위장되어 있으나, 실제 지맥 조율과 사방위 매개체 4인의 심리 통제를 전담하고 있다. 감정적 동요나 생체 파동 변이가 전혀 관측되지 않는 특수 개체.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                            <div class="font-mono-code font-bold text-slate-800 mb-1">LIKE</div>
+                            <div class="text-slate-600">정제된 물성 | 예법 | 정적</div>
+                        </div>
+                        <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                            <div class="font-mono-code font-bold text-slate-800 mb-1">HATE</div>
+                            <div class="text-slate-600">추상적인 믿음 | 어설픈 배려 | 무례함</div>
+                        </div>
+                        <div class="p-3.5 rounded-md bg-red-50/70 border border-red-200">
+                            <div class="font-mono-code font-bold text-red-800 mb-1">SCARY</div>
+                            <div class="text-red-900 font-medium">사방신의 완전 각성, 영원한 미물화, 봉인</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('agent-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function renderNotices() {
+            const list = document.getElementById('notices-list');
+            if (!list) return;
+            list.innerHTML = NOTICES.map((notice, idx) => `
+                <button onclick="openNoticeModal(${idx})" class="w-full text-left px-5 py-4 hover:bg-slate-50 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2 group">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="shrink-0 px-2.5 py-0.5 text-xs font-semibold rounded border ${notice.tagClass}">${notice.tag}</span>
+                        <span class="text-sm font-semibold text-slate-800 group-hover:text-[#1E3A8A] truncate">${notice.title}</span>
+                    </div>
+                    <div class="flex items-center gap-3 shrink-0 self-end sm:self-center">
+                        <span class="text-xs font-mono-code text-slate-400">${notice.date}</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-[#1E3A8A]"></i>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        // =====================================================================
+        // 4. 모달 제어 및 인터랙션
+        // =====================================================================
+        function openAgentModal(idx) {
+            const agent = AGENTS[idx];
+            const container = document.getElementById('agent-modal-content');
+            container.innerHTML = `
+                <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+                    <div class="flex items-center gap-4">
+                        <img src="${agent.image}" alt="${agent.name}" class="w-16 h-20 rounded object-cover object-top border border-slate-300 shrink-0">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 text-[11px] font-mono-code font-bold bg-[#0F172A] text-white rounded">${agent.code}</span>
+                                <span class="px-2 py-0.5 text-[11px] font-semibold bg-slate-100 text-slate-800 border border-slate-300 rounded">${agent.guardian}</span>
+                            </div>
+                            <h3 class="text-2xl font-bold text-[#0F172A]">${agent.name}</h3>
+                            <p class="text-sm font-medium text-slate-600 mt-0.5">${agent.publicRole}</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAgentModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-md hover:bg-slate-100">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <div class="mt-5 grid grid-cols-3 gap-3 text-xs">
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">연령</div>
+                        <div class="font-bold text-slate-800 text-sm">${agent.age}세</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">성별</div>
+                        <div class="font-bold text-slate-800 font-mono-code text-sm">${agent.gender}</div>
+                    </div>
+                    <div class="p-3 rounded-md bg-slate-50 border border-slate-200">
+                        <div class="text-slate-400 mb-0.5">관할 구역</div>
+                        <div class="font-bold text-slate-800 text-sm">${agent.sector}</div>
+                    </div>
+                </div>
+
+                <div class="mt-5 space-y-4">
+                    <div>
+                        <h4 class="text-xs font-mono-code font-bold text-slate-500 uppercase mb-1.5">요원 성향 및 공식 기록</h4>
+                        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-md border border-slate-200">${agent.publicTraits}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                            <div class="font-mono-code font-bold text-slate-800 mb-1">LIKE</div>
+                            <div class="text-slate-600">${agent.like}</div>
+                        </div>
+                        <div class="p-3.5 rounded-md bg-slate-50 border border-slate-200">
+                            <div class="font-mono-code font-bold text-slate-800 mb-1">HATE</div>
+                            <div class="text-slate-600">${agent.hate}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('agent-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeAgentModal() {
+            document.getElementById('agent-modal').classList.add('hidden');
+        }
+
+        function openAdvisorModal() {
+            document.getElementById('advisor-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeAdvisorModal() {
+            document.getElementById('advisor-modal').classList.add('hidden');
+        }
+
+        function openNoticeModal(idx) {
+            const notice = NOTICES[idx];
+            const container = document.getElementById('notice-modal-content');
+            container.innerHTML = `
+                <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-200">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2.5 py-0.5 text-xs font-semibold rounded border ${notice.tagClass}">${notice.tag}</span>
+                            <span class="text-xs font-mono-code text-slate-400">${notice.date}</span>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-bold text-[#0F172A] leading-snug">${notice.title}</h3>
+                    </div>
+                    <button onclick="closeNoticeModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-md">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="mt-5 space-y-3 text-sm text-slate-700 leading-relaxed">
+                    ${notice.body.map(p => `<p>${p}</p>`).join('')}
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center text-xs text-slate-400">
+                    <span>국립방위변칙연구원 대변인실</span>
+                    <button onclick="closeNoticeModal()" class="px-4 py-1.5 rounded bg-[#0F172A] text-white font-semibold">닫기</button>
+                </div>
+            `;
+            document.getElementById('notice-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeNoticeModal() {
+            document.getElementById('notice-modal').classList.add('hidden');
+        }
+
+        function openReportModal() {
+            document.getElementById('report-form').reset();
+            document.getElementById('report-form').classList.remove('hidden');
+            document.getElementById('report-success').classList.add('hidden');
+            document.getElementById('report-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        function submitReport(e) {
+            e.preventDefault();
+            document.getElementById('report-form').classList.add('hidden');
+            document.getElementById('report-success').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function openAuthModal() {
+            document.getElementById('clearance-input').value = '';
+            document.getElementById('auth-error').classList.add('hidden');
+            document.getElementById('auth-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('clearance-input').focus(), 50);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function verifyClearance(e) {
+            e.preventDefault();
+            const val = document.getElementById('clearance-input').value.trim().toUpperCase();
+            if (val === 'SENW') {
+                closeAuthModal();
+                startClassifiedLoading();
+            } else {
+                document.getElementById('auth-error').classList.remove('hidden');
+            }
+        }
+
+        function startClassifiedLoading() {
+            const loader = document.getElementById('classified-loader');
+            const card = document.getElementById('loader-card');
+            const header = document.getElementById('loader-header');
+            const ping = document.getElementById('loader-ping');
+            const badge = document.getElementById('loader-badge');
+            const title = document.getElementById('loader-title');
+            const subtitle = document.getElementById('loader-subtitle');
+            const track = document.getElementById('loader-track');
+            const bar = document.getElementById('loader-bar');
+            const percent = document.getElementById('loader-percent');
+            const logs = document.getElementById('loader-logs');
+
+            // 다크 + 레드 기밀 진입 테마 적용
+            loader.className = 'fixed inset-0 z-50 bg-[#050507] text-zinc-200 flex items-center justify-center p-6 classified-scanline';
+            card.className = 'w-full max-w-lg border border-red-900/70 bg-black/95 p-6 sm:p-8 space-y-6 shadow-2xl';
+            header.className = 'flex items-center justify-between border-b border-red-950 pb-4';
+            ping.className = 'w-2.5 h-2.5 rounded-full bg-red-600 animate-ping';
+            badge.className = 'text-xs font-mono-code font-bold tracking-widest text-red-500';
+            badge.textContent = 'CLEARANCE VERIFIED // OMEGA';
+            title.className = 'text-base sm:text-lg font-bold text-white tracking-tight';
+            subtitle.className = 'text-xs text-zinc-400 font-mono-code';
+            track.className = 'w-full h-2 bg-zinc-900 border border-zinc-800 overflow-hidden';
+            bar.className = 'h-full bg-red-600 transition-all duration-150';
+            percent.className = 'text-xs font-mono-code font-bold text-red-400';
+            logs.className = 'bg-zinc-950 border border-zinc-900 p-3.5 font-mono-code text-[11px] text-zinc-400 space-y-1.5 min-h-[104px]';
+
+            title.textContent = '1급 기밀 기록 보관소 복호화 중...';
+            subtitle.textContent = 'DECRYPTING PROJECT HWANGRYONG & SUBJECT ARCHIVES';
+            bar.style.width = '0%';
+            percent.textContent = '0%';
+            logs.innerHTML = '<div>&gt; 사방위 지맥 공명 위상 [S-E-N-W] 일치 확인...</div>';
+
+            const steps = [
+                { pct: '28%', msg: '&gt; 지휘부 OMEGA 보안 토큰 검증 완료...' },
+                { pct: '61%', msg: '&gt; 대외 위장 프로토콜 해제 및 심층 기록 복호화 중...' },
+                { pct: '89%', msg: '&gt; PROJECT HWANGRYONG 및 사방위 매개체 일지 로드...' },
+                { pct: '100%', msg: '&gt; ACCESS GRANTED. 기밀 아카이브로 전환합니다.' }
+            ];
+
+            steps.forEach((step, idx) => {
+                setTimeout(() => {
+                    bar.style.width = step.pct;
+                    percent.textContent = step.pct;
+                    const line = document.createElement('div');
+                    if (idx === steps.length - 1) {
+                        line.className = 'text-red-400 font-bold';
+                    }
+                    line.innerHTML = step.msg;
+                    logs.appendChild(line);
+                }, (idx + 1) * 420);
+            });
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                document.getElementById('public-portal').classList.add('hidden');
+                document.getElementById('classified-portal').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lucide.createIcons();
+            }, 2050);
+        }
+
+        function exitClassifiedMode() {
+            const loader = document.getElementById('classified-loader');
+            const card = document.getElementById('loader-card');
+            const header = document.getElementById('loader-header');
+            const ping = document.getElementById('loader-ping');
+            const badge = document.getElementById('loader-badge');
+            const title = document.getElementById('loader-title');
+            const subtitle = document.getElementById('loader-subtitle');
+            const track = document.getElementById('loader-track');
+            const bar = document.getElementById('loader-bar');
+            const percent = document.getElementById('loader-percent');
+            const logs = document.getElementById('loader-logs');
+
+            // 화이트 + 블루/스카이블루 공식 포털 복귀 테마 적용
+            loader.className = 'fixed inset-0 z-50 bg-[#F8FAFC] text-slate-800 flex items-center justify-center p-6';
+            card.className = 'w-full max-w-lg rounded-lg border border-sky-200 bg-white p-6 sm:p-8 space-y-6 shadow-xl';
+            header.className = 'flex items-center justify-between border-b border-slate-200 pb-4';
+            ping.className = 'w-2.5 h-2.5 rounded-full bg-sky-500 animate-ping';
+            badge.className = 'text-xs font-mono-code font-bold tracking-widest text-blue-600';
+            badge.textContent = 'PUBLIC PORTAL // SYNCING';
+            title.className = 'text-base sm:text-lg font-bold text-slate-900 tracking-tight';
+            subtitle.className = 'text-xs text-slate-500 font-mono-code';
+            track.className = 'w-full h-2 rounded-full bg-sky-100 border border-sky-200 overflow-hidden';
+            bar.className = 'h-full bg-gradient-to-r from-blue-600 to-sky-400 transition-all duration-150';
+            percent.className = 'text-xs font-mono-code font-bold text-blue-600';
+            logs.className = 'rounded-md bg-slate-50 border border-slate-200 p-3.5 font-mono-code text-[11px] text-slate-600 space-y-1.5 min-h-[104px]';
+
+            title.textContent = '기밀 아카이브 봉인 및 대국민 포털 전환 중...';
+            subtitle.textContent = 'SEALING CLASSIFIED ARCHIVES & RESTORING PUBLIC PORTAL';
+            bar.style.width = '0%';
+            percent.textContent = '0%';
+            logs.innerHTML = '<div>&gt; 열람 세션 로그 소거 및 기밀 문서 암호화 시작...</div>';
+
+            const steps = [
+                { pct: '31%', msg: '&gt; 1급 기밀 관찰 일지 및 은폐 인사 기록 봉인 완료...' },
+                { pct: '64%', msg: '&gt; 지휘부 OMEGA 인가 토큰 회수 처리 중...' },
+                { pct: '90%', msg: '&gt; 대국민 공식 포털 표준 인터페이스 재가동...' },
+                { pct: '100%', msg: '&gt; SESSION CLOSED. 대국민 포털로 복귀합니다.' }
+            ];
+
+            steps.forEach((step, idx) => {
+                setTimeout(() => {
+                    bar.style.width = step.pct;
+                    percent.textContent = step.pct;
+                    const line = document.createElement('div');
+                    if (idx === steps.length - 1) {
+                        line.className = 'text-blue-600 font-bold';
+                    }
+                    line.innerHTML = step.msg;
+                    logs.appendChild(line);
+                }, (idx + 1) * 420);
+            });
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                document.getElementById('classified-portal').classList.add('hidden');
+                document.getElementById('public-portal').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lucide.createIcons();
+            }, 2050);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function updateLiveClock() {
+            const el = document.getElementById('live-clock');
+            if (!el) return;
+            const now = new Date();
+            el.textContent = now.toTimeString().split(' ')[0] + ' KST';
+        }
+
+        // 배경 클릭 및 ESC 키로 모달 닫기
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAgentModal();
+                closeAdvisorModal();
+                closeNoticeModal();
+                closeReportModal();
+                closeAuthModal();
+            }
+        });
+
+        ['agent-modal', 'advisor-modal', 'notice-modal', 'report-modal', 'auth-modal'].forEach(id => {
+            document.getElementById(id).addEventListener('click', (e) => {
+                if (e.target.id === id) {
+                    e.target.classList.add('hidden');
+                }
+            });
+        });
+
+        // 초기화 실행
+        window.onload = function () {
+            renderAgents();
+            renderClassifiedAgents();
+            renderClassifiedInterviews();
+            renderNotices();
+            updateLiveClock();
+            setInterval(updateLiveClock, 1000);
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
